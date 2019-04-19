@@ -9,7 +9,7 @@ Begin Window Window1
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   482
+   Height          =   518
    ImplicitInstance=   True
    LiveResize      =   True
    MacProcID       =   0
@@ -23,7 +23,7 @@ Begin Window Window1
    MinWidth        =   64
    Placement       =   0
    Resizeable      =   True
-   Title           =   "Untitled"
+   Title           =   "Fractal Tree Previewer"
    Visible         =   True
    Width           =   600
    Begin Canvas Canvas1
@@ -78,7 +78,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Growth Stage (9):"
-      TextAlign       =   0
+      TextAlign       =   2
       TextColor       =   &c00000000
       TextFont        =   "Consolas"
       TextSize        =   0.0
@@ -89,7 +89,7 @@ Begin Window Window1
       Visible         =   True
       Width           =   140
    End
-   Begin Slider Slider1
+   Begin Slider GrowthSlider
       AutoDeactivate  =   True
       Enabled         =   True
       Height          =   24
@@ -130,11 +130,11 @@ Begin Window Window1
       InitialParent   =   ""
       Italic          =   False
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
@@ -142,7 +142,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Theta modifier:"
-      TextAlign       =   0
+      TextAlign       =   2
       TextColor       =   &c00000000
       TextFont        =   "Consolas"
       TextSize        =   0.0
@@ -172,11 +172,11 @@ Begin Window Window1
       Italic          =   False
       Left            =   172
       LimitText       =   0
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Mask            =   ""
       Password        =   False
       ReadOnly        =   False
@@ -220,7 +220,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Text            =   "Order (9):"
-      TextAlign       =   0
+      TextAlign       =   2
       TextColor       =   &c00000000
       TextFont        =   "Consolas"
       TextSize        =   0.0
@@ -231,7 +231,7 @@ Begin Window Window1
       Visible         =   True
       Width           =   100
    End
-   Begin Slider Slider2
+   Begin Slider OrderSlider
       AutoDeactivate  =   True
       Enabled         =   True
       Height          =   24
@@ -246,7 +246,7 @@ Begin Window Window1
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   False
-      Maximum         =   50
+      Maximum         =   20
       Minimum         =   1
       PageStep        =   20
       Scope           =   0
@@ -260,6 +260,73 @@ Begin Window Window1
       Visible         =   True
       Width           =   204
    End
+   Begin Label Label4
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   True
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Tree Presets:"
+      TextAlign       =   2
+      TextColor       =   &c00000000
+      TextFont        =   "Consolas"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   475
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   140
+   End
+   Begin PopupMenu PresetsPopup
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   22
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      InitialValue    =   ""
+      Italic          =   False
+      Left            =   172
+      ListIndex       =   0
+      LockBottom      =   True
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "Consolas"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   474
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   408
+   End
 End
 #tag EndWindow
 
@@ -267,7 +334,7 @@ End
 	#tag Method, Flags = &h0
 		Sub makeNewTree()
 		  
-		  tree = new FractalTree(slider2.value, me.height*0.9, thetaField.text.cdbl)
+		  tree = new FractalTree(OrderSlider.value, canvas1.height*0.9, thetaField.text.cdbl)
 		  
 		End Sub
 	#tag EndMethod
@@ -292,13 +359,13 @@ End
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  
-		  tree.DrawTree(g, me.width/2, me.height+20, slider1.Value)
+		  tree.DrawTree(g, me.width/2, me.height+20, GrowthSlider.Value)
 		  
 		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events Slider1
+#tag Events GrowthSlider
 	#tag Event
 		Sub ValueChanged()
 		  
@@ -318,13 +385,49 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events Slider2
+#tag Events OrderSlider
 	#tag Event
 		Sub ValueChanged()
 		  
 		  label3.Text = "Order ("+str(me.Value)+"):"
 		  makeNewTree
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PresetsPopup
+	#tag Event
+		Sub Change()
+		  
+		  if me.ListIndex = -1 then
+		    return
+		  end if
+		  
+		  dim d as dictionary = me.RowTag(me.ListIndex)
+		  
+		  thetaField.text = Format(d.value("theta_modifier").TypeDouble, "-#.00")
+		  GrowthSlider.value = d.value("growth_stage")
+		  OrderSlider.value = d.value("order")
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub Open()
+		  
+		  dim default as new dictionary
+		  default.value("theta_modifier") = 0.01
+		  default.value("growth_stage") = 9
+		  default.value("order") = 9
+		  
+		  dim realistic as new dictionary
+		  realistic.value("theta_modifier") = 6
+		  realistic.value("growth_stage") = 15
+		  realistic.value("order") = 15
+		  
+		  me.AddRow("Realistic")
+		  me.RowTag(me.ListCount-1) = realistic
+		  me.AddRow("Default")
+		  me.RowTag(me.ListCount-1) = default
 		End Sub
 	#tag EndEvent
 #tag EndEvents

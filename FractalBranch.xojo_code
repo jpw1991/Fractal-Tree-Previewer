@@ -1,15 +1,15 @@
 #tag Class
 Protected Class FractalBranch
 	#tag Property, Flags = &h0
-		branchColor As color = &c80400000
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
 		branchLine As Line
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		Children() As FractalBranch
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		stemThickness As Integer = 1
 	#tag EndProperty
 
 

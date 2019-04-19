@@ -24,6 +24,7 @@ Protected Class FractalTree
 		  extent = extent - 1
 		  
 		  g.foreColor = branch.branchLine.LineColor
+		  g.PenWidth = branch.stemThickness
 		  g.DrawLine(branch.branchLine.x1+targetX, branch.branchLine.y1+targetY, branch.branchLine.x2+targetX, branch.branchLine.y2+targetY)
 		  
 		  for each childBranch as FractalBranch in branch.children
@@ -68,6 +69,12 @@ Protected Class FractalTree
 		  
 		  dim newBranch as new FractalBranch
 		  newBranch.branchLine = newLine
+		  'newBranch.stemThickness = stemThickness
+		  
+		  '// reduce stem thickness for every new branch made, to a minimum of 1
+		  'if stemThickness > 1 then
+		  'stemThickness = if(stemThickness-1 < 1, 1, stemThickness-1)
+		  'end if
 		  
 		  parent.Children.Append(newBranch)
 		  
@@ -76,16 +83,16 @@ Protected Class FractalTree
 		    // draw another layer of subtrees
 		    
 		    // give brighter colors to newer branches
-		    dim oldCol as color = parent.branchColor
-		    dim newCol as color = parent.branchColor
+		    dim oldCol as color = parent.branchLine.LineColor
+		    dim newCol as color = parent.branchLine.LineColor
 		    if depth > 0 then
 		      newCol = RGB( _
-		      if(oldCol.Red - depth > 0, oldCol.Red - depth, oldCol.Red), _
-		      if(oldCol.Green + depth < 255, oldCol.Green + depth, oldCol.green), _
+		      if(oldCol.Red - depth > 0, oldCol.Red - depth*2, oldCol.Red), _
+		      if(oldCol.Green + depth < 255, oldCol.Green + depth*2, oldCol.green), _
 		      0)
 		    end if
 		    
-		    newBranch.branchColor = newCol
+		    newBranch.branchline.lineColor = newCol
 		    
 		    dim newsz as double = sz*(1 - trunkRatio)
 		    dim newTheta as double = theta + thetaModifier
@@ -102,6 +109,10 @@ Protected Class FractalTree
 
 	#tag Property, Flags = &h1
 		Protected iterations As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected stemThickness As Integer = 12
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
