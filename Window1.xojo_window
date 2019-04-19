@@ -67,7 +67,7 @@ Begin Window Window1
       Italic          =   False
       Left            =   20
       LockBottom      =   True
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   False
@@ -100,7 +100,7 @@ Begin Window Window1
       LineStep        =   1
       LiveScroll      =   False
       LockBottom      =   True
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   False
@@ -131,7 +131,7 @@ Begin Window Window1
       Italic          =   False
       Left            =   20
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
@@ -173,7 +173,7 @@ Begin Window Window1
       Left            =   172
       LimitText       =   0
       LockBottom      =   False
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
@@ -196,6 +196,70 @@ Begin Window Window1
       Visible         =   True
       Width           =   80
    End
+   Begin Label Label3
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   264
+      LockBottom      =   True
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Order (9):"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "Consolas"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   406
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin Slider Slider2
+      AutoDeactivate  =   True
+      Enabled         =   True
+      Height          =   24
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   376
+      LineStep        =   1
+      LiveScroll      =   False
+      LockBottom      =   True
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Maximum         =   50
+      Minimum         =   1
+      PageStep        =   20
+      Scope           =   0
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TickStyle       =   "0"
+      Top             =   406
+      Transparent     =   False
+      Value           =   9
+      Visible         =   True
+      Width           =   204
+   End
 End
 #tag EndWindow
 
@@ -203,7 +267,7 @@ End
 	#tag Method, Flags = &h0
 		Sub makeNewTree()
 		  
-		  tree = new FractalTree(9, me.height*0.9, thetaField.text.cdbl)
+		  tree = new FractalTree(slider2.value, me.height*0.9, thetaField.text.cdbl)
 		  
 		End Sub
 	#tag EndMethod
@@ -250,6 +314,16 @@ End
 		  
 		  makeNewTree
 		  canvas1.invalidate
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Slider2
+	#tag Event
+		Sub ValueChanged()
+		  
+		  label3.Text = "Order ("+str(me.Value)+"):"
+		  makeNewTree
 		  
 		End Sub
 	#tag EndEvent
