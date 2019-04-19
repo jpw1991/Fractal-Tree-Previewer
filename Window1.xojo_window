@@ -9,7 +9,7 @@ Begin Window Window1
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   400
+   Height          =   482
    ImplicitInstance=   True
    LiveResize      =   True
    MacProcID       =   0
@@ -34,13 +34,13 @@ Begin Window Window1
       DoubleBuffer    =   False
       Enabled         =   True
       EraseBackground =   True
-      Height          =   400
+      Height          =   394
       HelpTag         =   ""
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   0
       LockBottom      =   True
-      LockedInPosition=   False
+      LockedInPosition=   True
       LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
@@ -54,20 +54,163 @@ Begin Window Window1
       Visible         =   True
       Width           =   600
    End
-   Begin Timer Timer1
+   Begin Label Label1
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
       Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   True
       LockedInPosition=   False
-      Mode            =   2
-      Period          =   500
-      Scope           =   0
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   2
+      Selectable      =   False
+      TabIndex        =   1
       TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Growth Stage (9):"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "Consolas"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   438
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   140
+   End
+   Begin Slider Slider1
+      AutoDeactivate  =   True
+      Enabled         =   True
+      Height          =   24
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   172
+      LineStep        =   1
+      LiveScroll      =   False
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Maximum         =   100
+      Minimum         =   1
+      PageStep        =   20
+      Scope           =   2
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TickStyle       =   "0"
+      Top             =   438
+      Transparent     =   False
+      Value           =   9
+      Visible         =   True
+      Width           =   408
+   End
+   Begin Label Label2
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Theta modifier:"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "Consolas"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   406
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   140
+   End
+   Begin TextField thetaField
+      AcceptTabs      =   False
+      Alignment       =   3
+      AutoDeactivate  =   True
+      AutomaticallyCheckSpelling=   False
+      BackColor       =   &cFFFFFF00
+      Bold            =   False
+      Border          =   True
+      CueText         =   ""
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Format          =   ""
+      Height          =   22
+      HelpTag         =   ""
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   172
+      LimitText       =   0
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Mask            =   ""
+      Password        =   False
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "0.01"
+      TextColor       =   &c00000000
+      TextFont        =   "Consolas"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   405
+      Transparent     =   False
+      Underline       =   False
+      UseFocusRing    =   True
+      Visible         =   True
+      Width           =   80
    End
 End
 #tag EndWindow
 
 #tag WindowCode
+	#tag Method, Flags = &h0
+		Sub makeNewTree()
+		  
+		  tree = new FractalTree(9, me.height*0.9, thetaField.text.cdbl)
+		  
+		End Sub
+	#tag EndMethod
+
+
 	#tag Property, Flags = &h0
-		trees() As FractalTree
+		tree As FractalTree
 	#tag EndProperty
 
 
@@ -77,42 +220,36 @@ End
 	#tag Event
 		Sub Open()
 		  
-		  trees.append new FractalTree(me.Width/2, me.Height/2, 150)
+		  makeNewTree
+		  
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
 		  
-		  const pi as double = 3.14
-		  dim theta as double
-		  '
-		  'for each tree as FractalTreeOLD in trees
-		  '
-		  ''(order, theta, sz, posn, heading, color=(0,0,0), depth=0)
-		  'tree.DrawInto(g, tree.posX, tree.posY, 9, theta, 100, -pi/2, &c00000000, 0) //(9, theta, surface_height*0.9, (surface_width//2, surface_width-50), -math.pi/2)
-		  '
-		  'next
+		  tree.DrawTree(g, me.width/2, me.height+20, slider1.Value)
 		  
-		  for each tree as FractalTree in trees
-		    
-		    tree.Draw(g)
-		    
-		  next
 		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events Timer1
+#tag Events Slider1
 	#tag Event
-		Sub Action()
+		Sub ValueChanged()
 		  
-		  for each tree as FractalTree in trees
-		    
-		    tree.Grow(9, tree.lastX, tree.lastY)//tree.startX, tree.startY)
-		    canvas1.Invalidate
-		    
-		  next
+		  label1.Text = "Growth Rate ("+str(me.Value)+"):"
+		  canvas1.Invalidate
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events thetaField
+	#tag Event
+		Sub TextChange()
+		  
+		  makeNewTree
+		  canvas1.invalidate
 		  
 		End Sub
 	#tag EndEvent
