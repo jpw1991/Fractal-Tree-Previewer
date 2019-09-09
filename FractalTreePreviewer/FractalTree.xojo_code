@@ -3,8 +3,6 @@ Protected Class FractalTree
 	#tag Method, Flags = &h0
 		Sub Constructor(order as integer, sz as double, thetamod as double)
 		  
-		  'self.iterations = iterations
-		  
 		  dim theta as double = 0
 		  thetaModifier = thetamod
 		  const pi as double = 3.1415926
@@ -42,13 +40,24 @@ Protected Class FractalTree
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub GetBranchCount(byref counter as integer, branch as FractalBranch = nil)
+		  
+		  if branch = nil then
+		    branch = self.treeTrunk
+		  end if
+		  
+		  counter = counter + 1
+		  
+		  for each child as FractalBranch in branch.Children
+		    getBranchCount(counter, child)
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h1
 		Protected Sub Grow(order as integer, byref parent as FractalBranch, theta as double, sz as double, heading as double, depth as integer = 0)
-		  
-		  'if iterations <= 0 then
-		  'return
-		  'end if
-		  'iterations = iterations - 1
 		  
 		  dim trunk as double = sz * trunkRatio
 		  
@@ -69,12 +78,6 @@ Protected Class FractalTree
 		  
 		  dim newBranch as new FractalBranch
 		  newBranch.branchLine = newLine
-		  'newBranch.stemThickness = stemThickness
-		  
-		  '// reduce stem thickness for every new branch made, to a minimum of 1
-		  'if stemThickness > 1 then
-		  'stemThickness = if(stemThickness-1 < 1, 1, stemThickness-1)
-		  'end if
 		  
 		  parent.Children.Append(newBranch)
 		  

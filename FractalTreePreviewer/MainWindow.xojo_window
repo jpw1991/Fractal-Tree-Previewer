@@ -1,5 +1,5 @@
 #tag Window
-Begin Window Window1
+Begin Window MainWindow
    BackColor       =   &cFFFFFF00
    Backdrop        =   0
    CloseButton     =   True
@@ -9,14 +9,14 @@ Begin Window Window1
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   518
+   Height          =   548
    ImplicitInstance=   True
    LiveResize      =   True
    MacProcID       =   0
    MaxHeight       =   32000
    MaximizeButton  =   True
    MaxWidth        =   32000
-   MenuBar         =   898265087
+   MenuBar         =   0
    MenuBarVisible  =   True
    MinHeight       =   64
    MinimizeButton  =   True
@@ -83,7 +83,7 @@ Begin Window Window1
       TextFont        =   "Consolas"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   438
+      Top             =   470
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -112,9 +112,9 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       TickStyle       =   "0"
-      Top             =   438
+      Top             =   470
       Transparent     =   False
-      Value           =   9
+      Value           =   11
       Visible         =   True
       Width           =   408
    End
@@ -184,7 +184,7 @@ Begin Window Window1
       TabIndex        =   4
       TabPanelIndex   =   0
       TabStop         =   True
-      Text            =   "0.01"
+      Text            =   "0.3"
       TextColor       =   &c00000000
       TextFont        =   "Consolas"
       TextSize        =   0.0
@@ -246,7 +246,7 @@ Begin Window Window1
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   False
-      Maximum         =   20
+      Maximum         =   15
       Minimum         =   1
       PageStep        =   20
       Scope           =   0
@@ -289,7 +289,7 @@ Begin Window Window1
       TextFont        =   "Consolas"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   475
+      Top             =   507
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -321,9 +321,108 @@ Begin Window Window1
       TextFont        =   "Consolas"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   474
+      Top             =   506
       Transparent     =   False
       Underline       =   False
+      Visible         =   True
+      Width           =   192
+   End
+   Begin Label BranchCountLabel
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   376
+      LockBottom      =   True
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Branch count: 0"
+      TextAlign       =   2
+      TextColor       =   &c00000000
+      TextFont        =   "Consolas"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   506
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   204
+   End
+   Begin Label Label5
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   True
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   10
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Tree size (256):"
+      TextAlign       =   2
+      TextColor       =   &c00000000
+      TextFont        =   "Consolas"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   438
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   140
+   End
+   Begin Slider TreeSizeSlider
+      AutoDeactivate  =   True
+      Enabled         =   True
+      Height          =   24
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   172
+      LineStep        =   32
+      LiveScroll      =   False
+      LockBottom      =   True
+      LockedInPosition=   True
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Maximum         =   512
+      Minimum         =   32
+      PageStep        =   20
+      Scope           =   0
+      TabIndex        =   11
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TickStyle       =   "0"
+      Top             =   439
+      Transparent     =   False
+      Value           =   256
       Visible         =   True
       Width           =   408
    End
@@ -334,10 +433,39 @@ End
 	#tag Method, Flags = &h0
 		Sub makeNewTree()
 		  
-		  tree = new FractalTree(OrderSlider.value, canvas1.height*0.9, thetaField.text.cdbl)
+		  tree = new FractalTree(OrderSlider.value, TreeSizeSlider.value, thetaField.text.val)
+		  dim branchCount as integer
+		  tree.GetBranchCount(branchCount)
+		  BranchCountLabel.Text = "Branch count: "+str(branchCount)
+		  canvas1.Invalidate
 		  
 		End Sub
 	#tag EndMethod
+
+
+	#tag Note, Name = LICENCE
+		    The MIT License
+		    Copyright (c) 2019 Joshua Woods
+		
+		    Permission is hereby granted, free of charge, to any person obtaining a copy
+		    of this software and associated documentation files (the "Software"), to deal
+		    in the Software without restriction, including without limitation the rights
+		    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+		    copies of the Software, and to permit persons to whom the Software is
+		    furnished to do so, subject to the following conditions:
+		
+		    The above copyright notice and this permission notice shall be included in
+		    all copies or substantial portions of the Software.
+		
+		    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+		    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+		    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+		    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+		    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+		    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+		    THE SOFTWARE.
+		
+	#tag EndNote
 
 
 	#tag Property, Flags = &h0
@@ -405,7 +533,7 @@ End
 		  
 		  dim d as dictionary = me.RowTag(me.ListIndex)
 		  
-		  thetaField.text = Format(d.value("theta_modifier").TypeDouble, "-#.00")
+		  thetaField.text = d.value("theta_modifier")
 		  GrowthSlider.value = d.value("growth_stage")
 		  OrderSlider.value = d.value("order")
 		  
@@ -415,8 +543,8 @@ End
 		Sub Open()
 		  
 		  dim default as new dictionary
-		  default.value("theta_modifier") = 0.01
-		  default.value("growth_stage") = 9
+		  default.value("theta_modifier") = 0.3
+		  default.value("growth_stage") = 11
 		  default.value("order") = 9
 		  
 		  dim realistic as new dictionary
@@ -428,6 +556,17 @@ End
 		  me.RowTag(me.ListCount-1) = realistic
 		  me.AddRow("Default")
 		  me.RowTag(me.ListCount-1) = default
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events TreeSizeSlider
+	#tag Event
+		Sub ValueChanged()
+		  
+		  label5.Text = "Tree size ("+str(me.Value)+"):"
+		  makeNewTree
+		  canvas1.Invalidate
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
